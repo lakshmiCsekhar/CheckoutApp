@@ -1,0 +1,8 @@
+{
+  "id" : "3",
+  "productId" : "003",
+  "name" : "SWATCH",
+  "unitPrice" : 50.0,
+  "discountApplicable" : false,
+  "discount" : null
+}
