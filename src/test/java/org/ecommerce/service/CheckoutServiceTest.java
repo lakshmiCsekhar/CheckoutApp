@@ -1,6 +1,7 @@
 package org.ecommerce.service;
 
 
+import org.ecommerce.exception.ServiceFailedException;
 import org.ecommerce.model.Product;
 import org.ecommerce.repository.ProductRepository;
 import org.ecommerce.request.CheckoutRequest;
@@ -50,7 +51,7 @@ public class CheckoutServiceTest {
     }
 
     @Test
-    public void shouldDoCheckOutForDiscountedItem() throws IOException {
+    public void shouldDoCheckOutForDiscountedItem() throws IOException, ServiceFailedException {
         // test data prep
         String discountedProductJsonString = jsonFromFile("/testdata/productWithDiscount.json");
         String nonDiscountedProductJsonString = jsonFromFile("/testdata/productWithoutDiscount.json");
@@ -68,7 +69,7 @@ public class CheckoutServiceTest {
     }
 
     @Test
-    public void shouldApplyMultipleDiscounts() throws IOException {
+    public void shouldApplyMultipleDiscounts() throws IOException, ServiceFailedException {
         // test data prep
         String discountedProductJsonString = jsonFromFile("/testdata/productWithDiscount.json");
         String discountedProductJsonString_1 = jsonFromFile("/testdata/productWithDiscount_1.json");
@@ -89,7 +90,7 @@ public class CheckoutServiceTest {
     }
 
     @Test
-    public void shouldApplyDiscountMultipleTimes() throws IOException {
+    public void shouldApplyDiscountMultipleTimes() throws IOException, ServiceFailedException {
         // test data prep
         String discountedProductJsonString = jsonFromFile("/testdata/productWithDiscount.json");
         String discountedProductJsonString_1 = jsonFromFile("/testdata/productWithDiscount_1.json");
@@ -110,7 +111,7 @@ public class CheckoutServiceTest {
     }
 
     @Test
-    public void shouldDoCheckOutWithoutDiscount() throws IOException {
+    public void shouldDoCheckOutWithoutDiscount() throws IOException, ServiceFailedException {
         // test data prep
         String discountedProductJsonString = jsonFromFile("/testdata/productWithDiscount.json");
         String nonDiscountedProductJsonString = jsonFromFile("/testdata/productWithoutDiscount.json");
@@ -127,11 +128,10 @@ public class CheckoutServiceTest {
         Assert.assertEquals(150F,response.getPrice(),0);
     }
 
-    @Test
-    public void shouldReturnZeroOnException(){
+    @Test(expected = ServiceFailedException.class)
+    public void shouldReturnZeroOnException() throws ServiceFailedException {
         when(request.getProductsToCheckout()).thenThrow(new RuntimeException("Products are malfunctioning!"));
         CheckoutResponse response = checkoutService.doCheckout(request);
-        Assert.assertEquals(0F,response.getPrice(),0);
     }
 
 }
