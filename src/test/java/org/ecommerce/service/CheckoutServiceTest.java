@@ -127,6 +127,11 @@ public class CheckoutServiceTest {
         Assert.assertEquals(150F,response.getPrice(),0);
     }
 
-
+    @Test
+    public void shouldReturnZeroOnException(){
+        when(request.getProductsToCheckout()).thenThrow(new RuntimeException("Products are malfunctioning!"));
+        CheckoutResponse response = checkoutService.doCheckout(request);
+        Assert.assertEquals(0F,response.getPrice(),0);
+    }
 
 }
