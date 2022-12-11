@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestPropertySource(
         locations = "classpath:application-testdb.properties")
-public class CheckouApiIntegrationTest {
+public class CheckoutApiIT {
 
     @Autowired
     private MockMvc mvc;
@@ -43,7 +43,5 @@ public class CheckouApiIntegrationTest {
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.price", Matchers.is(280.0)));
     }
-
-
 
 }

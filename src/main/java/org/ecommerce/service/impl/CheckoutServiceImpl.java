@@ -1,6 +1,7 @@
 package org.ecommerce.service.impl;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.ecommerce.exception.ServiceFailedException;
 import org.ecommerce.model.Discount;
 import org.ecommerce.model.Product;
 import org.ecommerce.repository.ProductRepository;
@@ -24,13 +25,14 @@ public class CheckoutServiceImpl implements CheckoutService {
     ProductRepository productRepository;
 
 
-    public CheckoutResponse doCheckout(CheckoutRequest request) {
+    public CheckoutResponse doCheckout(CheckoutRequest request) throws ServiceFailedException {
         float totalPrice = 0;
         if (ObjectUtils.isNotEmpty(request)) {
             try {
                 totalPrice = startCheckout(request, totalPrice);
             } catch (Exception e) {
                 logger.error("Something went wrong during checkout.");
+                throw new ServiceFailedException("Something went wrong : " + e);
             }
 
         } else {
@@ -101,6 +103,5 @@ public class CheckoutServiceImpl implements CheckoutService {
         }
         return totalCostForProduct;
     }
-
 
 }
